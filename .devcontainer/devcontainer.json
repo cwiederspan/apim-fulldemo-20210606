@@ -44,6 +44,7 @@
 		"ms-azuretools.vscode-azureterraform",
 		"ms-azuretools.vscode-azurefunctions",
 		"ms-kubernetes-tools.vscode-kubernetes-tools",
+		"ms-azuretools.vscode-bicep",
 		"hashicorp.terraform",
 		"visualstudioexptteam.vscodeintellicode",
 		"davidanson.vscode-markdownlint",
