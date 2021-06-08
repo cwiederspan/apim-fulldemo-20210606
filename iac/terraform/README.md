@@ -17,7 +17,7 @@ terraform init --backend-config ./backend-secrets.tfvars
 terraform plan \
 -var 'base_name=cdw-apimdemo-20210606' \
 -var 'location=westus2' \
--var 'api_dns_name=archazure.com'
+-var 'root_dns_name=archazure.com'
 
 #--var-file=secrets.tfvars
 
@@ -26,7 +26,7 @@ terraform plan \
 terraform apply \
 -var 'base_name=cdw-apimdemo-20210606' \
 -var 'location=westus2' \
--var 'api_dns_name=archazure.com'
+-var 'root_dns_name=archazure.com'
 
 #--var-file=secrets.tfvars
 

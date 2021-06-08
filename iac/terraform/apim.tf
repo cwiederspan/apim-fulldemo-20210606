@@ -33,22 +33,22 @@ resource "azurerm_api_management_custom_domain" "apimdomain" {
 
   management {
     key_vault_id = azurerm_key_vault_certificate.cert.secret_id
-    host_name    = "management.${var.api_dns_name}"
+    host_name    = local.apim_management_dns_name
   }
 
   proxy {
     key_vault_id = azurerm_key_vault_certificate.cert.secret_id
-    host_name    = "api.${var.api_dns_name}"
+    host_name    = local.apim_proxy_dns_name
     # default_ssl_binding = true
   }
 
   developer_portal {
     key_vault_id = azurerm_key_vault_certificate.cert.secret_id
-    host_name = "developer.${var.api_dns_name}"
+    host_name = local.apim_devportal_dns_name
   }
 
   scm {
     key_vault_id = azurerm_key_vault_certificate.cert.secret_id
-    host_name = "git.${var.api_dns_name}"
+    host_name = local.apim_scm_dns_name
   }
 }

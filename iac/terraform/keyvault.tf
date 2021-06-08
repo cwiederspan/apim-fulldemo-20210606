@@ -60,7 +60,21 @@ resource "azurerm_key_vault" "kv" {
   access_policy {
     tenant_id = data.azurerm_client_config.current.tenant_id
     object_id = azurerm_api_management.apim.identity[0].principal_id
-    #object_id = azurerm_user_assigned_identity.msi.principal_id
+
+    certificate_permissions = [
+      "List",
+      "Get",
+    ]
+
+    secret_permissions = [
+      "List",
+      "Get",
+    ]
+  }
+
+  access_policy {
+    tenant_id = data.azurerm_client_config.current.tenant_id
+    object_id = azurerm_user_assigned_identity.appgwmsi.principal_id
 
     certificate_permissions = [
       "List",
@@ -136,14 +150,14 @@ resource "azurerm_key_vault_certificate" "cert" {
 
       subject_alternative_names {
         dns_names = [
-            "management.${var.api_dns_name}",
-            "developer.${var.api_dns_name}",
-            "api.${var.api_dns_name}",
-            "git.${var.api_dns_name}"
+            local.apim_proxy_dns_name,
+            local.apim_management_dns_name,
+            local.apim_devportal_dns_name,
+            local.apim_scm_dns_name
         ]
       }
 
-      subject            = "CN=${var.api_dns_name}"
+      subject            = "CN=${var.root_dns_name}"
       validity_in_months = 12
     }
   }

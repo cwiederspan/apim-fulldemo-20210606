@@ -26,7 +26,7 @@ variable "location" {
   description = "The Azure region where the resources will be created."
 }
 
-variable "api_dns_name" {
+variable "root_dns_name" {
   type        = string
   description = "The root domain name to be used for exposing the APIM site."
 }
