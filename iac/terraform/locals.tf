@@ -1,6 +1,11 @@
 locals {
-  apim_proxy_dns_name      = "api.${var.root_dns_name}"
-  apim_management_dns_name = "management.${var.root_dns_name}"
-  apim_devportal_dns_name  = "developer.${var.root_dns_name}"
-  apim_scm_dns_name        = "git.${var.root_dns_name}"
+  proxy_dns_prefix         = "api"
+  management_dns_prefix    = "management"
+  devportal_dns_prefix     = "developer"
+  scm_dns_prefix           = "git"
+
+  apim_proxy_dns_name      = "${local.proxy_dns_prefix}.${var.root_dns_name}"
+  apim_management_dns_name = "${local.management_dns_prefix}.${var.root_dns_name}"
+  apim_devportal_dns_name  = "${local.devportal_dns_prefix}.${var.root_dns_name}"
+  apim_scm_dns_name        = "${local.scm_dns_prefix}.${var.root_dns_name}"
 }

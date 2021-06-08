@@ -73,8 +73,15 @@ resource "azurerm_application_gateway" "gateway" {
     port = 443
   }
 
+  backend_address_pool {
+    name = "${local.backend_address_pool_name}-apim"
+    ip_addresses = [
+      azurerm_api_management.apim.private_ip_addresses[0]
+    ]
+  }
+
   http_listener {
-    name                           = "${local.listener_name}-https"
+    name                           = "${local.listener_name}-proxy"
     frontend_ip_configuration_name = local.frontend_ip_configuration_name
     frontend_port_name             = "${local.frontend_port_name}-https"
     protocol                       = "https"
@@ -83,34 +90,42 @@ resource "azurerm_application_gateway" "gateway" {
     require_sni                    = true
   }
 
+  http_listener {
+    name                           = "${local.listener_name}-devportal"
+    frontend_ip_configuration_name = local.frontend_ip_configuration_name
+    frontend_port_name             = "${local.frontend_port_name}-https"
+    protocol                       = "https"
+    ssl_certificate_name           = "${var.base_name}-ssl"
+    host_names                     = [local.apim_devportal_dns_name]
+    require_sni                    = true
+  }
+
   backend_http_settings {
-    name                           = local.http_setting_name
+    name                           = "${local.http_setting_name}-proxy"
     cookie_based_affinity          = "Disabled"
     port                           = 443
     protocol                       = "https"
     path                           = "/"
     request_timeout                = 180
-    probe_name                     = local.probe_name
     trusted_root_certificate_names = ["${var.base_name}-trc"]
+    probe_name                     = "${local.probe_name}-proxy"
     host_name                      = local.apim_proxy_dns_name
   }
 
-  backend_address_pool {
-    name = "${local.backend_address_pool_name}-apim"
-    ip_addresses = [
-      azurerm_api_management.apim.private_ip_addresses[0]
-    ]
+  backend_http_settings {
+    name                           = "${local.http_setting_name}-devportal"
+    cookie_based_affinity          = "Disabled"
+    port                           = 443
+    protocol                       = "https"
+    path                           = "/"
+    request_timeout                = 180
+    trusted_root_certificate_names = ["${var.base_name}-trc"]
+    probe_name                     = "${local.probe_name}-devportal"
+    host_name                      = local.apim_devportal_dns_name
   }
 
-  #   http_listener {
-  #     name                           = "${local.listener_name}-http"
-  #     frontend_ip_configuration_name = local.frontend_ip_configuration_name
-  #     frontend_port_name             = "${local.frontend_port_name}-http"
-  #     protocol                       = "http"
-  #   }
-
   probe {
-    name                = local.probe_name
+    name                = "${local.probe_name}-proxy"
     protocol            = "https"
     path                = "/status-0123456789abcdef"
     interval            = 30
@@ -119,19 +134,31 @@ resource "azurerm_application_gateway" "gateway" {
     host                = local.apim_proxy_dns_name
   }
 
-  #   request_routing_rule {
-  #     name               = "${local.request_routing_rule_name}-http"
-  #     rule_type          = "PathBasedRouting"
-  #     http_listener_name = "${local.listener_name}-http"
-  #     url_path_map_name  = local.url_path_map_name
-  #   }
-
+  probe {
+    name                = "${local.probe_name}-devportal"
+    protocol            = "https"
+    path                = "/internal-status-0123456789abcdef"
+    interval            = 60
+    timeout             = 300
+    unhealthy_threshold = 8
+    host                = local.apim_devportal_dns_name
+  }
+  
   request_routing_rule {
-    name      = "${local.request_routing_rule_name}-https"
+    name      = "${local.request_routing_rule_name}-proxy"
     rule_type = "Basic"
 
-    http_listener_name         = "${local.listener_name}-https"
     backend_address_pool_name  = "${local.backend_address_pool_name}-apim"
-    backend_http_settings_name = local.http_setting_name
+    http_listener_name         = "${local.listener_name}-proxy"
+    backend_http_settings_name = "${local.http_setting_name}-proxy"
+  }
+
+  request_routing_rule {
+    name      = "${local.request_routing_rule_name}-devportal"
+    rule_type = "Basic"
+
+    backend_address_pool_name  = "${local.backend_address_pool_name}-apim"
+    http_listener_name         = "${local.listener_name}-devportal"
+    backend_http_settings_name = "${local.http_setting_name}-devportal"
   }
 }
