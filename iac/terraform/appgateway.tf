@@ -20,7 +20,7 @@ resource "azurerm_public_ip" "ip" {
 }
 
 resource "azurerm_user_assigned_identity" "appgwmsi" {
-  name                = "${var.base_name}-msi" # TODO: Rename this to -appgw
+  name                = "${var.base_name}-appgw"
   resource_group_name = azurerm_resource_group.rg.name
   location            = azurerm_resource_group.rg.location
 }
@@ -143,7 +143,7 @@ resource "azurerm_application_gateway" "gateway" {
     unhealthy_threshold = 8
     host                = local.apim_devportal_dns_name
   }
-  
+
   request_routing_rule {
     name      = "${local.request_routing_rule_name}-proxy"
     rule_type = "Basic"
