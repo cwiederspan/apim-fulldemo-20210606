@@ -81,6 +81,16 @@ resource "azurerm_application_gateway" "gateway" {
   }
 
   http_listener {
+    name                           = "${local.listener_name}-management"
+    frontend_ip_configuration_name = local.frontend_ip_configuration_name
+    frontend_port_name             = "${local.frontend_port_name}-https"
+    protocol                       = "https"
+    ssl_certificate_name           = "${var.base_name}-ssl"
+    host_names                     = [local.apim_management_dns_name]
+    require_sni                    = true
+  }
+
+  http_listener {
     name                           = "${local.listener_name}-proxy"
     frontend_ip_configuration_name = local.frontend_ip_configuration_name
     frontend_port_name             = "${local.frontend_port_name}-https"
@@ -98,6 +108,18 @@ resource "azurerm_application_gateway" "gateway" {
     ssl_certificate_name           = "${var.base_name}-ssl"
     host_names                     = [local.apim_devportal_dns_name]
     require_sni                    = true
+  }
+
+  backend_http_settings {
+    name                           = "${local.http_setting_name}-management"
+    cookie_based_affinity          = "Disabled"
+    port                           = 443
+    protocol                       = "https"
+    path                           = "/"
+    request_timeout                = 180
+    # trusted_root_certificate_names = ["${var.base_name}-trc"]
+    probe_name                     = "${local.probe_name}-management"
+    host_name                      = local.apim_management_dns_name
   }
 
   backend_http_settings {
@@ -125,6 +147,16 @@ resource "azurerm_application_gateway" "gateway" {
   }
 
   probe {
+    name                = "${local.probe_name}-management"
+    protocol            = "https"
+    path                = "/ServiceStatus"
+    interval            = 30
+    timeout             = 120
+    unhealthy_threshold = 8
+    host                = local.apim_management_dns_name
+  }
+
+  probe {
     name                = "${local.probe_name}-proxy"
     protocol            = "https"
     path                = "/status-0123456789abcdef"
@@ -142,6 +174,15 @@ resource "azurerm_application_gateway" "gateway" {
     timeout             = 300
     unhealthy_threshold = 8
     host                = local.apim_devportal_dns_name
+  }
+
+  request_routing_rule {
+    name      = "${local.request_routing_rule_name}-management"
+    rule_type = "Basic"
+
+    backend_address_pool_name  = "${local.backend_address_pool_name}-apim"
+    http_listener_name         = "${local.listener_name}-management"
+    backend_http_settings_name = "${local.http_setting_name}-management"
   }
 
   request_routing_rule {
