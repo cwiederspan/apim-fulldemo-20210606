@@ -17,17 +17,17 @@ terraform init --backend-config ./backend-secrets.tfvars
 terraform plan \
 -var 'base_name=cdw-apimdemo-20210608' \
 -var 'location=westus2' \
--var 'root_dns_name=apimdemo.com'
-
-#--var-file=secrets.tfvars
+-var 'root_dns_name=apimdemo.com' \
+-var 'contact_email=chwieder@microsoft.com' \
+--var-file=secrets.tfvars
 
 
 # Apply the script with the specified variable values
 terraform apply \
 -var 'base_name=cdw-apimdemo-20210608' \
 -var 'location=westus2' \
--var 'root_dns_name=apimdemo.com'
-
-#--var-file=secrets.tfvars
+-var 'root_dns_name=apimdemo.com' \
+-var 'contact_email=chwieder@microsoft.com' \
+--var-file=secrets.tfvars
 
 ```

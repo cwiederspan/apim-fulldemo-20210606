@@ -53,10 +53,10 @@ resource "azurerm_application_gateway" "gateway" {
     key_vault_secret_id = azurerm_key_vault_certificate.cert.secret_id
   }
 
-  trusted_root_certificate {
-    name = "${var.base_name}-trc"
-    data = azurerm_key_vault_certificate.cert.certificate_data_base64
-  }
+  # trusted_root_certificate {
+  #   name = "${var.base_name}-trc"
+  #   data = azurerm_key_vault_certificate.cert.certificate_data_base64
+  # }
 
   frontend_ip_configuration {
     name                 = local.frontend_ip_configuration_name
@@ -107,7 +107,7 @@ resource "azurerm_application_gateway" "gateway" {
     protocol                       = "https"
     path                           = "/"
     request_timeout                = 180
-    trusted_root_certificate_names = ["${var.base_name}-trc"]
+    # trusted_root_certificate_names = ["${var.base_name}-trc"]
     probe_name                     = "${local.probe_name}-proxy"
     host_name                      = local.apim_proxy_dns_name
   }
@@ -119,7 +119,7 @@ resource "azurerm_application_gateway" "gateway" {
     protocol                       = "https"
     path                           = "/"
     request_timeout                = 180
-    trusted_root_certificate_names = ["${var.base_name}-trc"]
+    # trusted_root_certificate_names = ["${var.base_name}-trc"]
     probe_name                     = "${local.probe_name}-devportal"
     host_name                      = local.apim_devportal_dns_name
   }

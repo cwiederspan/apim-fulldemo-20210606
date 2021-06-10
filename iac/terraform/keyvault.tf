@@ -104,6 +104,7 @@ resource "azurerm_key_vault" "kv" {
 #   ]
 # }
 
+/*
 resource "azurerm_key_vault_certificate" "cert" {
   name         = "${var.base_name}-cert"
   key_vault_id = azurerm_key_vault.kv.id
@@ -162,3 +163,4 @@ resource "azurerm_key_vault_certificate" "cert" {
     }
   }
 }
+*/
