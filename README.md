@@ -1,10 +1,13 @@
 # Full API Management Demo
 
+This demo uses Terraform to create an Azure API Management service internally in a VNET. Primary points of interest include
+generating SSL certificates on the fly wtih Let's Encrypt, and exposing the APIM service through an Application Gateway.
+
 ## Change Directory
 
 ```bash
 
-cd iac/terraform
+cd terraform
 
 ```
 
