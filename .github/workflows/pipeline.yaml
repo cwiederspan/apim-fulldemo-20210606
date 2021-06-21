@@ -1,4 +1,4 @@
-name: 'Terraform'
+name: 'Build API Full Demo'
 
 on: workflow_dispatch
   #workflow_dispatch
