@@ -25,7 +25,7 @@ jobs:
 
       TF_CODE_PATH: './terraform'
 
-      TF_BASE_NAME: cdw-apimdemo-20210608
+      TF_BASE_NAME: cdw-apimdemo-20210621
       TF_LOCATION: westus2
       TF_ROOT_DNS_NAME: apimdemo.com
       TF_CONTACT_EMAIL: chwieder@microsoft.com
