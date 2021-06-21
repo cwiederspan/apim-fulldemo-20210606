@@ -63,4 +63,11 @@ jobs:
             -var "base_name=${{ env.TF_BASE_NAME }}" \
             -var "location=${{ env.TF_LOCATION }}" \
             -var "root_dns_name=${{ env.TF_ROOT_DNS_NAME }}" \
-            -var "contact_email=${{ env.TF_CONTACT_EMAIL }}"
+            -var "contact_email=${{ env.TF_CONTACT_EMAIL }}" \
+            -out out.tfplan
+
+      # Terraform Apply
+      - name: Terraform Apply
+        working-directory: ${{ env.TF_CODE_PATH }}
+        run: |
+          terraform apply -auto-approve out.tfplan
