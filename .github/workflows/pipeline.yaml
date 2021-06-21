@@ -1,0 +1,65 @@
+name: 'Terraform'
+
+on: workflow_dispatch
+  #workflow_dispatch
+    # inputs:
+    #   name:
+    #     description: 'Person to greet'
+    #     required: true
+    #     default: 'Mona the Octocat'
+    #   home:
+    #     description: 'location'
+    #     required: false
+    #     default: 'The Octoverse'
+
+jobs:
+  terraform:
+    runs-on: ubuntu-latest
+
+    env:
+      AZURE_TENANT_ID: ${{ fromJson(secrets.AZURE_CREDENTIALS).tenantId }}
+      AZURE_SUBSCRIPTION_ID: ${{ fromJson(secrets.AZURE_CREDENTIALS).subscriptionId }}
+      AZURE_CLIENT_ID: ${{ fromJson(secrets.AZURE_CREDENTIALS).clientId }}
+      AZURE_CLIENT_SECRET: ${{ fromJson(secrets.AZURE_CREDENTIALS).clientSecret }}
+
+      TF_CODE_PATH: './terraform'
+
+      TF_BASE_NAME: cdw-apimdemo-20210608
+      TF_LOCATION: westus2
+      TF_ROOT_DNS_NAME: apimdemo.com
+      TF_CONTACT_EMAIL: chwieder@microsoft.com
+
+    steps:
+
+      # Download the code from the repo
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      # Log into Azure
+      - name: Login to Azure
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      # Terraform Setup
+      - uses: hashicorp/setup-terraform@v1
+
+      # Terraform Init
+      - name: Terraform Init
+        working-directory: ${{ env.TF_CODE_PATH }}
+        run: |
+          terraform init \
+            -backend-config="storage_account_name=${{ secrets.TF_STATE_ACCOUNT }}" \
+            -backend-config="container_name=${{ secrets.TF_STATE_CONTAINER }}" \
+            -backend-config="key=${{ env.TF_BASE_NAME }}.tfstate" \
+            -backend-config="access_key=${{ secrets.TF_STATE_SECRET }}"
+
+      # Terraform Plan
+      - name: Terraform Plan
+        working-directory: ${{ env.TF_CODE_PATH }}
+        run: |
+          terraform plan \
+            -var "base_name=${{ env.TF_BASE_NAME }}" \
+            -var "location=${{ env.TF_LOCATION }}" \
+            -var "root_dns_name=${{ env.TF_ROOT_DNS_NAME }}" \
+            -var "contact_email=${{ env.TF_CONTACT_EMAIL }}"

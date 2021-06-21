@@ -30,10 +30,10 @@ resource "acme_certificate" "ssl" {
     config = {
       AZURE_RESOURCE_GROUP = azurerm_resource_group.rg.name
 
-      AZURE_TENANT_ID       = data.azurerm_client_config.current.tenant_id
-      AZURE_SUBSCRIPTION_ID = data.azurerm_client_config.current.subscription_id
-      AZURE_CLIENT_ID       = var.az_sp_app_id
-      AZURE_CLIENT_SECRET   = var.az_sp_app_secret
+      # AZURE_TENANT_ID       = data.azurerm_client_config.current.tenant_id
+      # AZURE_SUBSCRIPTION_ID = data.azurerm_client_config.current.subscription_id
+      # AZURE_CLIENT_ID       = data.azurerm_client_config.current.client_id #var.az_sp_app_id
+      # AZURE_CLIENT_SECRET   = var.az_sp_app_secret
     }
   }
 }
