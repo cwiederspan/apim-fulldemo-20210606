@@ -23,6 +23,8 @@ jobs:
       ARM_CLIENT_ID: ${{ fromJson(secrets.AZURE_CREDENTIALS).clientId }}
       ARM_CLIENT_SECRET: ${{ fromJson(secrets.AZURE_CREDENTIALS).clientSecret }}
 
+      AZURE_CLIENT_SECRET: ${{ fromJson(secrets.AZURE_CREDENTIALS).clientSecret }}
+
       TF_CODE_PATH: './terraform'
 
       TF_BASE_NAME: cdw-apimdemo-20210621
