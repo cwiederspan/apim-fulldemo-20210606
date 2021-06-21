@@ -1,16 +1,16 @@
-name: 'Build API Full Demo'
+name: "Build API Full Demo"
 
-on: workflow_dispatch
-  #workflow_dispatch
-    # inputs:
-    #   name:
-    #     description: 'Person to greet'
-    #     required: true
-    #     default: 'Mona the Octocat'
-    #   home:
-    #     description: 'location'
-    #     required: false
-    #     default: 'The Octoverse'
+on:
+  workflow_dispatch
+  # inputs:
+  #   name:
+  #     description: 'Person to greet'
+  #     required: true
+  #     default: 'Mona the Octocat'
+  #   home:
+  #     description: 'location'
+  #     required: false
+  #     default: 'The Octoverse'
 
 jobs:
   terraform:
@@ -18,6 +18,8 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
+      
+      # Used by Terraform for Service Principal authentication
       TENANT_ID: ${{ fromJson(secrets.AZURE_CREDENTIALS).tenantId }}
       SUBSCRIPTION_ID: ${{ fromJson(secrets.AZURE_CREDENTIALS).subscriptionId }}
       CLIENT_ID: ${{ fromJson(secrets.AZURE_CREDENTIALS).clientId }}
@@ -26,15 +28,14 @@ jobs:
       # Used for DNS confirmation in dns.tf
       #AZURE_CLIENT_SECRET: ${{ fromJson(secrets.AZURE_CREDENTIALS).clientSecret }}
 
-      TF_CODE_PATH: './terraform'
+      MY_CODE_PATH: "./terraform"
 
-      TF_BASE_NAME: cdw-apimdemo-20210621
-      TF_LOCATION: westus2
-      TF_ROOT_DNS_NAME: apimdemo.com
-      TF_CONTACT_EMAIL: chwieder@microsoft.com
+      MY_BASE_NAME: cdw-apimdemo-20210621
+      MY_LOCATION: westus2
+      MY_ROOT_DNS_NAME: apimdemo.com
+      MY_CONTACT_EMAIL: chwieder@microsoft.com
 
     steps:
-
       # Download the code from the repo
       - name: Checkout
         uses: actions/checkout@v2
@@ -50,27 +51,27 @@ jobs:
 
       # Terraform Init
       - name: Terraform Init
-        working-directory: ${{ env.TF_CODE_PATH }}
+        working-directory: ${{ env.MY_CODE_PATH }}
         run: |
           terraform init \
             -backend-config="storage_account_name=${{ secrets.TF_STATE_ACCOUNT }}" \
             -backend-config="container_name=${{ secrets.TF_STATE_CONTAINER }}" \
-            -backend-config="key=${{ env.TF_BASE_NAME }}.tfstate" \
+            -backend-config="key=${{ env.MY_BASE_NAME }}.tfstate" \
             -backend-config="access_key=${{ secrets.TF_STATE_SECRET }}"
 
       # Terraform Plan
       - name: Terraform Plan
-        working-directory: ${{ env.TF_CODE_PATH }}
+        working-directory: ${{ env.MY_CODE_PATH }}
         run: |
           terraform plan \
-            -var "base_name=${{ env.TF_BASE_NAME }}" \
-            -var "location=${{ env.TF_LOCATION }}" \
-            -var "root_dns_name=${{ env.TF_ROOT_DNS_NAME }}" \
-            -var "contact_email=${{ env.TF_CONTACT_EMAIL }}" \
+            -var "base_name=${{ env.MY_BASE_NAME }}" \
+            -var "location=${{ env.MY_LOCATION }}" \
+            -var "root_dns_name=${{ env.MY_ROOT_DNS_NAME }}" \
+            -var "contact_email=${{ env.MY_CONTACT_EMAIL }}" \
             -out out.tfplan
 
       # Terraform Apply
       - name: Terraform Apply
-        working-directory: ${{ env.TF_CODE_PATH }}
+        working-directory: ${{ env.MY_CODE_PATH }}
         run: |
           terraform apply -auto-approve out.tfplan
