@@ -18,16 +18,6 @@ variable "contact_email" {
   type        = string
 }
 
-# variable "az_sp_app_id" {
-#   description = "An Azure service principal application ID to use to verify DNS entries."
-#   type        = string
-# }
-
-# variable "az_sp_app_secret" {
-#   description = "The secret used with the service principal."
-#   type        = string
-# }
-
 data "azurerm_client_config" "current" {}
 
 resource "azurerm_resource_group" "rg" {
