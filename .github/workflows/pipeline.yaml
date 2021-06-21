@@ -18,7 +18,7 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      
+
       # Used by Terraform for Service Principal authentication
       TENANT_ID: ${{ fromJson(secrets.AZURE_CREDENTIALS).tenantId }}
       SUBSCRIPTION_ID: ${{ fromJson(secrets.AZURE_CREDENTIALS).subscriptionId }}
@@ -28,9 +28,9 @@ jobs:
       # Used for DNS confirmation in dns.tf
       #AZURE_CLIENT_SECRET: ${{ fromJson(secrets.AZURE_CREDENTIALS).clientSecret }}
 
+      # Used locally below
       MY_CODE_PATH: "./terraform"
-
-      MY_BASE_NAME: cdw-apimdemo-20210621
+      MY_BASE_NAME: cdw-apimdemo-20210622
       MY_LOCATION: westus2
       MY_ROOT_DNS_NAME: apimdemo.com
       MY_CONTACT_EMAIL: chwieder@microsoft.com
