@@ -20,10 +20,10 @@ jobs:
     env:
 
       # Used by Terraform for Service Principal authentication
-      TENANT_ID: ${{ fromJson(secrets.AZURE_CREDENTIALS).tenantId }}
-      SUBSCRIPTION_ID: ${{ fromJson(secrets.AZURE_CREDENTIALS).subscriptionId }}
-      CLIENT_ID: ${{ fromJson(secrets.AZURE_CREDENTIALS).clientId }}
-      CLIENT_SECRET: ${{ fromJson(secrets.AZURE_CREDENTIALS).clientSecret }}
+      ARM_TENANT_ID: ${{ fromJson(secrets.AZURE_CREDENTIALS).tenantId }}
+      ARM_SUBSCRIPTION_ID: ${{ fromJson(secrets.AZURE_CREDENTIALS).subscriptionId }}
+      ARM_CLIENT_ID: ${{ fromJson(secrets.AZURE_CREDENTIALS).clientId }}
+      ARM_CLIENT_SECRET: ${{ fromJson(secrets.AZURE_CREDENTIALS).clientSecret }}
 
       # Used for DNS confirmation in dns.tf
       #AZURE_CLIENT_SECRET: ${{ fromJson(secrets.AZURE_CREDENTIALS).clientSecret }}
