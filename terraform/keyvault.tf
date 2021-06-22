@@ -57,20 +57,20 @@ resource "azurerm_key_vault" "kv" {
     ]
   }
 
-  # access_policy {
-  #   tenant_id = data.azurerm_client_config.current.tenant_id
-  #   object_id = azurerm_api_management.apim.identity[0].principal_id
+  access_policy {
+    tenant_id = data.azurerm_client_config.current.tenant_id
+    object_id = azurerm_api_management.apim.identity[0].principal_id
 
-  #   certificate_permissions = [
-  #     "List",
-  #     "Get",
-  #   ]
+    certificate_permissions = [
+      "List",
+      "Get",
+    ]
 
-  #   secret_permissions = [
-  #     "List",
-  #     "Get",
-  #   ]
-  # }
+    secret_permissions = [
+      "List",
+      "Get",
+    ]
+  }
 
   access_policy {
     tenant_id = data.azurerm_client_config.current.tenant_id

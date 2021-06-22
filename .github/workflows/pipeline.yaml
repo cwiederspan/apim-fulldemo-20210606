@@ -25,9 +25,6 @@ jobs:
       ARM_CLIENT_ID: ${{ fromJson(secrets.AZURE_CREDENTIALS).clientId }}
       ARM_CLIENT_SECRET: ${{ fromJson(secrets.AZURE_CREDENTIALS).clientSecret }}
 
-      # Used for DNS confirmation in dns.tf
-      #AZURE_CLIENT_SECRET: ${{ fromJson(secrets.AZURE_CREDENTIALS).clientSecret }}
-
       # Used locally below
       MY_CODE_PATH: "./terraform"
       MY_BASE_NAME: cdw-apimdemo-20210622
