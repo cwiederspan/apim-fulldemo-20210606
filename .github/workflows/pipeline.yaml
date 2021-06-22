@@ -53,8 +53,8 @@ jobs:
           terraform init \
             -backend-config="storage_account_name=${{ secrets.TF_STATE_ACCOUNT }}" \
             -backend-config="container_name=${{ secrets.TF_STATE_CONTAINER }}" \
-            -backend-config="key=${{ env.MY_BASE_NAME }}.tfstate" \
-            -backend-config="access_key=${{ secrets.TF_STATE_SECRET }}"
+            -backend-config="access_key=${{ secrets.TF_STATE_SECRET }}" \
+            -backend-config="key=${{ env.MY_BASE_NAME }}.tfstate"
 
       # Terraform Plan
       - name: Terraform Plan
@@ -70,5 +70,4 @@ jobs:
       # Terraform Apply
       - name: Terraform Apply
         working-directory: ${{ env.MY_CODE_PATH }}
-        run: |
-          terraform apply -auto-approve out.tfplan
+        run: terraform apply -auto-approve out.tfplan
