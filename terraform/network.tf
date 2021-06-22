@@ -1,4 +1,12 @@
-  
+resource "azurerm_public_ip" "ip" {
+  name                = "${var.base_name}-ip"
+  resource_group_name = azurerm_resource_group.rg.name
+  location            = azurerm_resource_group.rg.location
+  domain_name_label   = var.base_name
+  allocation_method   = "Static"
+  sku                 = "Standard"
+}
+
 resource "azurerm_virtual_network" "vnet" {
   name                = "${var.base_name}-vnet"
   resource_group_name = azurerm_resource_group.rg.name
