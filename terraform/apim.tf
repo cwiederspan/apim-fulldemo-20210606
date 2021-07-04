@@ -3,8 +3,8 @@ resource "azurerm_api_management" "apim" {
   resource_group_name = azurerm_resource_group.rg.name
   location            = azurerm_resource_group.rg.location
 
-  publisher_name      = "Microsoft"
-  publisher_email     = "chwieder@microsoft.com"
+  publisher_name      = var.contact_name
+  publisher_email     = var.contact_email
 
   sku_name = "Developer_1"
 

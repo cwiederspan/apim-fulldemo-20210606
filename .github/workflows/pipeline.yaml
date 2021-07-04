@@ -30,6 +30,7 @@ jobs:
       MY_BASE_NAME: cdw-apimdemo-20210622
       MY_LOCATION: westus2
       MY_ROOT_DNS_NAME: apimdemo.com
+      MY_CONTACT_NAME: Chris Wiederspan
       MY_CONTACT_EMAIL: chwieder@microsoft.com
 
     steps:
@@ -64,6 +65,7 @@ jobs:
             -var "base_name=${{ env.MY_BASE_NAME }}" \
             -var "location=${{ env.MY_LOCATION }}" \
             -var "root_dns_name=${{ env.MY_ROOT_DNS_NAME }}" \
+            -var "contact_name=${{ env.MY_CONTACT_NAME }}" \
             -var "contact_email=${{ env.MY_CONTACT_EMAIL }}" \
             -out out.tfplan
 

@@ -13,8 +13,13 @@ variable "root_dns_name" {
   description = "The root domain name to be used for exposing the APIM site."
 }
 
+variable "contact_name" {
+  description = "Full name of the contact person for APIM and SSL certifiate."
+  type        = string
+}
+
 variable "contact_email" {
-  description = "Email address for renewal notifications."
+  description = "Email address for APIM and SSL renewal notifications."
   type        = string
 }
 
