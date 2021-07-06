@@ -383,3 +383,5 @@ override.tf.json
 **/*secret*.tfvars
 !**/sample-secrets.tfvars
 !**/sample-backend-secrets.tfvars
+
+Scratch.txt

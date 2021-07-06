@@ -26,12 +26,7 @@ jobs:
       ARM_CLIENT_SECRET: ${{ fromJson(secrets.AZURE_CREDENTIALS).clientSecret }}
 
       # Used locally below
-      MY_CODE_PATH: "./terraform"
-      MY_BASE_NAME: cdw-apimdemo-20210622
-      MY_LOCATION: westus2
-      MY_ROOT_DNS_NAME: apimdemo.com
-      MY_CONTACT_NAME: Chris Wiederspan
-      MY_CONTACT_EMAIL: chwieder@microsoft.com
+      CODE_PATH: "./terraform"
 
     steps:
       # Download the code from the repo
@@ -49,27 +44,27 @@ jobs:
 
       # Terraform Init
       - name: Terraform Init
-        working-directory: ${{ env.MY_CODE_PATH }}
+        working-directory: ${{ env.CODE_PATH }}
         run: |
           terraform init \
             -backend-config="storage_account_name=${{ secrets.TF_STATE_ACCOUNT }}" \
             -backend-config="container_name=${{ secrets.TF_STATE_CONTAINER }}" \
             -backend-config="access_key=${{ secrets.TF_STATE_SECRET }}" \
-            -backend-config="key=${{ env.MY_BASE_NAME }}.tfstate"
+            -backend-config="key=${{ secret.PARAM_BASE_NAME }}.tfstate"
 
       # Terraform Plan
       - name: Terraform Plan
-        working-directory: ${{ env.MY_CODE_PATH }}
+        working-directory: ${{ env.CODE_PATH }}
         run: |
           terraform plan \
-            -var "base_name=${{ env.MY_BASE_NAME }}" \
-            -var "location=${{ env.MY_LOCATION }}" \
-            -var "root_dns_name=${{ env.MY_ROOT_DNS_NAME }}" \
-            -var "contact_name=${{ env.MY_CONTACT_NAME }}" \
-            -var "contact_email=${{ env.MY_CONTACT_EMAIL }}" \
+            -var "base_name=${{ secret.PARAM_BASE_NAME }}" \
+            -var "location=${{ secret.PARAM_LOCATION }}" \
+            -var "root_dns_name=${{ secret.PARAM_ROOT_DNS_NAME }}" \
+            -var "contact_name=${{ secret.PARAM_CONTACT_NAME }}" \
+            -var "contact_email=${{ secret.PARAM_CONTACT_EMAIL }}" \
             -out out.tfplan
 
       # Terraform Apply
       - name: Terraform Apply
-        working-directory: ${{ env.MY_CODE_PATH }}
+        working-directory: ${{ env.CODE_PATH }}
         run: terraform apply -auto-approve out.tfplan
