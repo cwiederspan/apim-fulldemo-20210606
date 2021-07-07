@@ -58,14 +58,10 @@ jobs:
         env:
           TF_VAR_base_name: ${{ secrets.PARAM_BASE_NAME }}
           TF_VAR_location: ${{ secrets.PARAM_LOCATION }}
-        run: |
-          terraform plan \
-            # -var "base_name=${{ secrets.PARAM_BASE_NAME }}" \
-            # -var "location=${{ secrets.PARAM_LOCATION }}" \
-            -var "root_dns_name=${{ secrets.PARAM_ROOT_DNS_NAME }}" \
-            -var "contact_name=${{ secrets.PARAM_CONTACT_NAME }}" \
-            -var "contact_email=${{ secrets.PARAM_CONTACT_EMAIL }}" \
-            -out out.tfplan
+          TF_VAR_root_dns_name: ${{ secrets.PARAM_ROOT_DNS_NAME }}
+          TF_VAR_contact_name: ${{ secrets.PARAM_CONTACT_NAME }}
+          TF_VAR_contact_email: ${{ secrets.PARAM_CONTACT_EMAIL }}
+        run: terraform plan -out out.tfplan
 
       # Terraform Apply
       - name: Terraform Apply
