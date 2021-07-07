@@ -55,10 +55,13 @@ jobs:
       # Terraform Plan
       - name: Terraform Plan
         working-directory: ${{ env.CODE_PATH }}
+        env:
+          TF_VAR_BASE_NAME: ${{ secrets.PARAM_BASE_NAME }}
+          TF_VAR_LOCATION: ${{ secrets.PARAM_LOCATION }}
         run: |
           terraform plan \
-            -var "base_name=${{ secrets.PARAM_BASE_NAME }}" \
-            -var "location=${{ secrets.PARAM_LOCATION }}" \
+            # -var "base_name=${{ secrets.PARAM_BASE_NAME }}" \
+            # -var "location=${{ secrets.PARAM_LOCATION }}" \
             -var "root_dns_name=${{ secrets.PARAM_ROOT_DNS_NAME }}" \
             -var "contact_name=${{ secrets.PARAM_CONTACT_NAME }}" \
             -var "contact_email=${{ secrets.PARAM_CONTACT_EMAIL }}" \
