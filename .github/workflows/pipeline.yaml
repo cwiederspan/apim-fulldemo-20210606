@@ -56,8 +56,8 @@ jobs:
       - name: Terraform Plan
         working-directory: ${{ env.CODE_PATH }}
         env:
-          TF_VAR_BASE_NAME: ${{ secrets.PARAM_BASE_NAME }}
-          TF_VAR_LOCATION: ${{ secrets.PARAM_LOCATION }}
+          TF_VAR_base_name: ${{ secrets.PARAM_BASE_NAME }}
+          TF_VAR_location: ${{ secrets.PARAM_LOCATION }}
         run: |
           terraform plan \
             # -var "base_name=${{ secrets.PARAM_BASE_NAME }}" \
