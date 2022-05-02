@@ -55,8 +55,9 @@ jobs:
       # Terraform Import
       - name: Terraform Import
         working-directory: ${{ env.CODE_PATH }}
-        run:
-          terraform import azurerm_resource_group.rg /subscriptions/${{ env.ARM_SUBSCRIPTION_ID }}/resourceGroups/${{ secrets.PARAM_BASE_NAME }}
+        run: |
+          echo $ARM_SUBSCRIPTION_ID
+          terraform import azurerm_resource_group.rg /subscriptions/$ARM_SUBSCRIPTION_ID/resourceGroups/${{ secrets.PARAM_BASE_NAME }}
 
       # Terraform Plan
       - name: Terraform Plan
