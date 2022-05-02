@@ -1,11 +1,11 @@
-name: "Build API Full Demo"
+name: "Import Resource Group State"
 
 on:
   workflow_dispatch
 
 jobs:
   terraform:
-    name: Deploy with Terraform
+    name: Import Terraform State
     runs-on: ubuntu-latest
 
     env:
@@ -43,8 +43,8 @@ jobs:
             -backend-config="access_key=${{ secrets.TF_STATE_SECRET }}" \
             -backend-config="key=${{ secrets.PARAM_BASE_NAME }}.tfstate"
 
-      # Terraform Plan
-      - name: Terraform Plan
+      # Terraform Import
+      - name: Terraform Import
         working-directory: ${{ env.CODE_PATH }}
         env:
           TF_VAR_base_name: ${{ secrets.PARAM_BASE_NAME }}
@@ -52,9 +52,5 @@ jobs:
           TF_VAR_root_dns_name: ${{ secrets.PARAM_ROOT_DNS_NAME }}
           TF_VAR_contact_name: ${{ secrets.PARAM_CONTACT_NAME }}
           TF_VAR_contact_email: ${{ secrets.PARAM_CONTACT_EMAIL }}
-        run: terraform plan -out out.tfplan
-
-      # Terraform Apply
-      - name: Terraform Apply
-        working-directory: ${{ env.CODE_PATH }}
-        run: terraform apply -auto-approve out.tfplan
+        run: 
+          terraform import azurerm_resource_group.rg /subscriptions/$ARM_SUBSCRIPTION_ID/resourceGroups/$TF_VAR_base_name
