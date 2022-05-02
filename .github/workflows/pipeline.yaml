@@ -52,6 +52,12 @@ jobs:
             -backend-config="access_key=${{ secrets.TF_STATE_SECRET }}" \
             -backend-config="key=${{ secrets.PARAM_BASE_NAME }}.tfstate"
 
+      # Terraform Import
+      - name: Terraform Import
+        working-directory: ${{ env.CODE_PATH }}
+        run:
+          terraform import azurerm_resource_group.rg /subscriptions/${{ env.ARM_SUBSCRIPTION_ID }}/resourceGroups/${{ secrets.PARAM_BASE_NAME }}
+
       # Terraform Plan
       - name: Terraform Plan
         working-directory: ${{ env.CODE_PATH }}
