@@ -16,7 +16,7 @@ resource "acme_certificate" "ssl" {
   key_type        = local.ssl_key_size
 
   subject_alternative_names = [
-    local.apim_proxy_dns_name,
+    local.apim_gateway_dns_name,
     local.apim_management_dns_name,
     local.apim_devportal_dns_name,
     local.apim_scm_dns_name

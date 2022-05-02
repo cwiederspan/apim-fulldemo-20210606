@@ -1,5 +1,5 @@
 terraform {
-  required_version = ">= 1.0"
+  required_version = ">= 1.1"
   
   backend "azurerm" {
     environment = "public"
@@ -7,17 +7,17 @@ terraform {
 
   required_providers {
     azurerm = {
-      version = "~> 2.79"
+      version = "~> 3.4"
     }
 
     acme = {
       source  = "vancluever/acme"
-      version = "~> 2.4"
+      version = "~> 2.8"
     }
 
     tls = {
       source  = "hashicorp/tls"
-      version = "~> 3.1.0"
+      version = "~> 3.3.0"
     }
   }
 }

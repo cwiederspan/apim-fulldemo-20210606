@@ -3,8 +3,8 @@ resource "azurerm_dns_zone" "dns" {
   resource_group_name = azurerm_resource_group.rg.name
 }
 
-resource "azurerm_dns_a_record" "proxy" {
-  name                = local.proxy_dns_prefix
+resource "azurerm_dns_a_record" "gateway" {
+  name                = local.gateway_dns_prefix
   zone_name           = azurerm_dns_zone.dns.name
   resource_group_name = azurerm_resource_group.rg.name
   ttl                 = 300

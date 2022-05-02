@@ -37,10 +37,10 @@ resource "azurerm_api_management_custom_domain" "apimdomain" {
     host_name    = local.apim_management_dns_name
   }
 
-  proxy {
+  gateway {
     # key_vault_id = azurerm_key_vault_certificate.cert.secret_id
     key_vault_id = "https://${azurerm_key_vault.kv.name}.vault.azure.net/secrets/${azurerm_key_vault_certificate.cert.name}"
-    host_name    = local.apim_proxy_dns_name
+    host_name    = local.apim_gateway_dns_name
     # default_ssl_binding = true
   }
 
