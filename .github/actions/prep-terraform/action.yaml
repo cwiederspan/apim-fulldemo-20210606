@@ -1,0 +1,33 @@
+# name: "Prepare Terraform"
+# description: "Executes Terraform install and init steps"
+
+# inputs:
+#   code-path:
+#     description: 'Location of Terraform directory'
+#     required: true
+
+#   env:
+
+#     # Used by Terraform for Service Principal authentication
+#     # https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/guides/service_principal_client_secret#configuring-the-service-principal-in-terraform
+#     ARM_TENANT_ID: ${{ fromJson(secrets.AZURE_CREDENTIALS).tenantId }}
+#     ARM_SUBSCRIPTION_ID: ${{ fromJson(secrets.AZURE_CREDENTIALS).subscriptionId }}
+#     ARM_CLIENT_ID: ${{ fromJson(secrets.AZURE_CREDENTIALS).clientId }}
+#     ARM_CLIENT_SECRET: ${{ fromJson(secrets.AZURE_CREDENTIALS).clientSecret }}
+
+# runs:
+#   using: "composite"
+#   steps:
+#     # Terraform Setup
+#     - uses: hashicorp/setup-terraform@v1
+
+#     # Terraform Init
+#     - name: Terraform Init
+#       shell: bash
+#       working-directory: ${{ inputs.code-path }}
+#       run: |
+#         terraform init \
+#           -backend-config="storage_account_name=${{ secrets.TF_STATE_ACCOUNT }}" \
+#           -backend-config="container_name=${{ secrets.TF_STATE_CONTAINER }}" \
+#           -backend-config="access_key=${{ secrets.TF_STATE_SECRET }}" \
+#           -backend-config="key=${{ secrets.PARAM_BASE_NAME }}.tfstate"

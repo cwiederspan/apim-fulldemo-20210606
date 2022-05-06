@@ -74,3 +74,6 @@ gh secret set PARAM_CONTACT_NAME  -b"$CONTACT_NAME"
 gh secret set PARAM_CONTACT_EMAIL -b"$CONTACT_EMAIL"
 
 ```
+
+## Testing It Out
+
